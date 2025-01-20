@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import eventRoutes from './routes/event.route.js';
+import userRoutes from "./routes/user.route.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/events', eventRoutes);
+app.use("/api/users", userRoutes);
 
 // Centralized Error Handling Middleware
 app.use((err, res) => {
