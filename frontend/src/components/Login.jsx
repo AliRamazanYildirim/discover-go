@@ -25,6 +25,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <h1 className="main-title">Discover Go</h1>
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin} className="login-form">
@@ -46,10 +48,11 @@ const Login = () => {
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
         </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit" className="login-button">Login</button>
       </form>
     </div>
+    </>
   );
 };
 
