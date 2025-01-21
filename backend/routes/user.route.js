@@ -4,12 +4,14 @@ import {
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
 // CRUD Routes for Users
+router.post("/login", loginUser); // Login
 router.post("/", createUser); // Create (Register)
 router.get("/", getAllUsers); // Read (All Users)
 router.get("/:id", getUserById); // Read (Single User)
