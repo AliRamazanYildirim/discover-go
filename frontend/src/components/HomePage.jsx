@@ -1,71 +1,90 @@
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
-import { Map, Marker } from 'pigeon-maps';
-import { Menu, Home, Info, Settings } from '@mui/icons-material';
-import { useState } from 'react';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
+import { Map, Marker } from "pigeon-maps";
+import { Menu, Home, Info, Settings } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { useEventStore } from "../store/useEventStore";
+import EventForm from "./EventForm";
 
 const HomePage = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+  const { events, getAllEvents, openModal, setMapClickLocation } =
+    useEventStore();
 
-    const toggleDrawer = () => {
-        setDrawerOpen(!drawerOpen);
-    };
+  useEffect(() => {
+    getAllEvents();
+  }, [getAllEvents]);
 
-    const menuItems = [
-        { text: 'Home', icon: <Home />, link: '#' },
-        { text: 'About', icon: <Info />, link: '#about' },
-        { text: 'Settings', icon: <Settings />, link: '#settings' },
-    ];
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-    return (
-        <Box 
-            sx={{ 
-                position: 'relative', 
-                height: '100vh', 
-                width: '100vw', 
-                overflow: 'hidden', 
-                backgroundColor: 'background.default', 
-                color: 'text.primary' 
-            }}
-        >
-            <IconButton 
-                onClick={toggleDrawer} 
-                sx={{ position: 'absolute', top: 16, left: 16, zIndex: 2 }}
-            >
-                <Menu />
-            </IconButton>
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
-            <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
-                <List>
-                    {menuItems.map((item, index) => (
-                        <ListItem button key={index} component="a" href={item.link}>
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
+  const menuItems = [
+    { text: "Home", icon: <Home />, link: "#" },
+    { text: "About", icon: <Info />, link: "#about" },
+    { text: "Settings", icon: <Settings />, link: "#settings" },
+  ];
 
-            <Map
-                height={window.innerHeight} // Direct pixel value is used
-                defaultCenter={[50.1109, 8.6821]} // Frankfurt coordinates
-                defaultZoom={11}
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}
-            >
-                <Marker width={50} anchor={[50.1109, 8.6821]} />
-            </Map>
-            <Box 
-                sx={{ 
-                    position: 'relative', 
-                    zIndex: 1, 
-                    padding: 3, 
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-                    borderRadius: 1 
-                }}
-            >
-            </Box>
-        </Box>
-    );
+  const handleMapClick = ({ latLng }) => {
+    setMapClickLocation({ lat: latLng[0], lng: latLng[1] });
+    openModal({
+      title: "",
+      description: "",
+      date: "",
+    });
+  };
+
+  return (
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <IconButton
+        onClick={toggleDrawer}
+        sx={{ position: "absolute", top: 16, left: 16, zIndex: 2 }}
+      >
+        <Menu />
+      </IconButton>
+
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
+        <List>
+          {menuItems.map((item, index) => (
+            <ListItem button key={index} component="a" href={item.link}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <Map
+        height={window.innerHeight}
+        defaultCenter={[50.1109, 8.6821]}
+        defaultZoom={11}
+        onClick={handleMapClick}
+      >
+        {events
+          .filter(
+            (event) =>
+              event.location &&
+              event.location.lat !== undefined &&
+              event.location.lng !== undefined
+          )
+          .map((event, index) => (
+            <Marker
+              key={index}
+              width={50}
+              anchor={[event.location.lat, event.location.lng]}
+            />
+          ))}
+      </Map>
+
+      <EventForm />
+    </div>
+  );
 };
 
 export default HomePage;
-

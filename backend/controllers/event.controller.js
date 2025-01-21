@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 
 // Get all events
-export const getEvents = async (req, res) => {
+export const getAllEvents = async (req, res) => {
     try {
         const events = await Event.find({});
         res.status(200).json({ success: true, data: events });
