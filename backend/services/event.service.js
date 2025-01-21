@@ -19,11 +19,11 @@ const apiRequest = async (method, endpoint, data = null) => {
 };
 
 // Event API Endpoints
-export const fetchEvents = async () => {
+export const getEvents = async () => {
     return apiRequest('get', '/events');
 };
 
-export const fetchEventById = async (id) => {
+export const getEventById = async (id) => {
     if (!id) throw new Error("Event ID is required");
     return apiRequest('get', `/events/${id}`);
 };
