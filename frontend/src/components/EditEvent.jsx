@@ -1,8 +1,9 @@
-import { Modal, Box, TextField, Button } from '@mui/material';
+import { Modal, Box, TextField, Button, IconButton, Input, InputLabel, FormControl } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEventStore } from '../store/useEventStore';
 
-const EditEvent = () => {
-    const { editModalOpen, currentEvent, updateEvent, closeEditModal } = useEventStore();
+const EventForm = () => {
+    const { modalOpen, currentEvent, mapClickLocation, addEvent, closeModal } = useEventStore();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -12,21 +13,15 @@ const EditEvent = () => {
     };
 
     const handleSubmit = async () => {
-        if (!currentEvent || !currentEvent._id) {
-            console.error('Invalid event data');
-            return;
+        if (currentEvent) {
+            const eventWithLocation = { ...currentEvent, location: mapClickLocation };
+            await addEvent(eventWithLocation);
         }
-
-        try {
-            await updateEvent(currentEvent._id, currentEvent);
-            closeEditModal();
-        } catch (error) {
-            console.error('Error while updating event:', error.message || error);
-        }
+        closeModal();
     };
 
     return (
-        <Modal open={editModalOpen} onClose={closeEditModal}>
+        <Modal open={modalOpen} onClose={closeModal}>
             <Box
                 sx={{
                     position: 'absolute',
@@ -38,7 +33,12 @@ const EditEvent = () => {
                     boxShadow: 24,
                     p: 4,
                 }}>
-                <h2>Edit Event</h2>
+                <IconButton
+                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                    onClick={closeModal}>
+                    <CloseIcon />
+                </IconButton>
+                <h2 className='event'>Add Event</h2>
                 <TextField
                     fullWidth
                     label="Title"
@@ -55,26 +55,38 @@ const EditEvent = () => {
                     onChange={handleInputChange}
                     margin="normal"
                 />
-                <TextField
-                    fullWidth
-                    label="Date"
-                    name="date"
-                    type="date"
-                    value={currentEvent?.date || ''}
-                    onChange={handleInputChange}
-                    margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    sx={{ mt: 2 }}>
-                    Save Changes
-                </Button>
+                <FormControl fullWidth margin="normal">
+                    <InputLabel htmlFor="date">Date</InputLabel>
+                    <Input
+                        id="date"
+                        name="date"
+                        type="date"
+                        value={currentEvent?.date || ''}
+                        onChange={handleInputChange}
+                    />
+                </FormControl>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        mt: 2,
+                    }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}>
+                        Save Event
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={closeModal}>
+                        Cancel
+                    </Button>
+                </Box>
             </Box>
         </Modal>
     );
 };
 
-export default EditEvent;
+export default EventForm;

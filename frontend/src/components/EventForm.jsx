@@ -1,4 +1,5 @@
-import { Modal, Box, TextField, Button } from '@mui/material';
+import { Modal, Box, TextField, Button, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEventStore } from '../store/useEventStore';
 
 const EventForm = () => {
@@ -32,7 +33,12 @@ const EventForm = () => {
                     boxShadow: 24,
                     p: 4,
                 }}>
-                <h2>Add Event</h2>
+                <IconButton
+                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                    onClick={closeModal}>
+                    <CloseIcon />
+                </IconButton>
+                <h2 className='event'>Add Event</h2>
                 <TextField
                     fullWidth
                     label="Title"
@@ -59,13 +65,25 @@ const EventForm = () => {
                     margin="normal"
                     InputLabelProps={{ shrink: true }}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    sx={{ mt: 2 }}>
-                    Save
-                </Button>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        mt: 2,
+                    }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}>
+                        Save Event
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={closeModal}>
+                        Cancel
+                    </Button>
+                </Box>
             </Box>
         </Modal>
     );
