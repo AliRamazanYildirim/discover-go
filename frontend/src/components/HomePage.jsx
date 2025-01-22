@@ -11,14 +11,38 @@ import { Menu, Home, Info, Settings } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useEventStore } from "../store/useEventStore";
 import EventForm from "./EventForm";
+import EditEvent from "./EditEvent";
 
 const HomePage = () => {
-  const { events, getAllEvents, openModal, setMapClickLocation } =
-    useEventStore();
+  const {
+    events,
+    getAllEvents,
+    openModal,
+    setMapClickLocation,
+    openEditModal,
+  } = useEventStore();
 
   useEffect(() => {
     getAllEvents();
   }, [getAllEvents]);
+
+  const handleMapClick = ({ latLng }) => {
+    if (!latLng || latLng.length !== 2) {
+      console.error("Invalid map click location");
+      return;
+    }
+
+    setMapClickLocation({ lat: latLng[0], lng: latLng[1] });
+    openModal({
+      title: "",
+      description: "",
+      date: "",
+    });
+  };
+
+  const handleMarkerClick = (event) => {
+    openEditModal(event);
+  };
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -32,14 +56,14 @@ const HomePage = () => {
     { text: "Settings", icon: <Settings />, link: "#settings" },
   ];
 
-  const handleMapClick = ({ latLng }) => {
+  /* const handleMapClick = ({ latLng }) => {
     setMapClickLocation({ lat: latLng[0], lng: latLng[1] });
     openModal({
       title: "",
       description: "",
       date: "",
     });
-  };
+  }; */
 
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
@@ -77,12 +101,14 @@ const HomePage = () => {
             <Marker
               key={index}
               width={50}
-              anchor={[event.location.lat, event.location.lng]}
+              anchor={[event?.location?.lat || 0, event?.location?.lng || 0]}
+              onClick={() => handleMarkerClick(event)}
             />
           ))}
       </Map>
 
       <EventForm />
+      <EditEvent />
     </div>
   );
 };

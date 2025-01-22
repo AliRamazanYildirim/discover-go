@@ -4,15 +4,18 @@ import { createEvent, getAllEvents, updateEvent, deleteEvent } from '../../../ba
 export const useEventStore = create((set) => ({
     events: [],
     modalOpen: false,
+    editModalOpen: false,
     currentEvent: null,
     mapClickLocation: null,
     setMapClickLocation: (location) => set({ mapClickLocation: location }),
+    openEditModal: (event) => set({ editModalOpen: true, currentEvent: event }),
+    closeEditModal: () => set({ editModalOpen: false, currentEvent: null }),
     addEvent: async (event) => {
         try {
             const newEvent = await createEvent(event);
             set((state) => ({ events: [...state.events, newEvent] }));
         } catch (error) {
-            console.error('Error adding event:', error);
+            console.error('Error adding event:', error.message || error);
         }
     },
     getAllEvents: async () => {
@@ -20,7 +23,7 @@ export const useEventStore = create((set) => ({
             const response = await getAllEvents();
             set({ events: response.data || [] });
         } catch (error) {
-            console.error('Error fetching events:', error);
+            console.error('Error fetching events:', error.message || error);
             set({ events: [] });
         }
     },
@@ -31,7 +34,7 @@ export const useEventStore = create((set) => ({
                 events: state.events.map((event) => event._id === id ? updated : event),
             }));
         } catch (error) {
-            console.error('Error updating event:', error);
+            console.error('Error updating event:', error.message || error);
         }
     },
     deleteEvent: async (id) => {
@@ -41,7 +44,7 @@ export const useEventStore = create((set) => ({
                 events: state.events.filter((event) => event._id !== id),
             }));
         } catch (error) {
-            console.error('Error deleting event:', error);
+            console.error('Error deleting event:', error.message || error);
         }
     },
     setEvents: (events) => set({ events }),
