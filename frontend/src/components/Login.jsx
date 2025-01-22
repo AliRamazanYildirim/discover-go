@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { loginUser } from '../../../backend/services/user.service';
-import '../styles/Login.css';
 import useLoginStore from '../store/useLoginStore';
 
 const Login = () => {
