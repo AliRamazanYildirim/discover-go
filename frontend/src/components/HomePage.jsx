@@ -10,8 +10,9 @@ import { Map, Marker } from "pigeon-maps";
 import { Menu, Home, Info, Settings } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useEventStore } from "../store/useEventStore";
-import EventForm from "./EventForm";
-import EditEvent from "./EditEvent";
+import AddEventForm from "./AddEventForm";
+import EditEventForm from "./EditEventForm";
+
 
 const HomePage = () => {
   const {
@@ -51,8 +52,8 @@ const HomePage = () => {
   };
 
   const menuItems = [
-    { text: "Home", icon: <Home />, link: "#" },
-    { text: "About", icon: <Info />, link: "#about" },
+    { text: "Dashboard", icon: <Home />, link: "#" },
+    { text: "Event", icon: <Info />, link: "#event" },
     { text: "Settings", icon: <Settings />, link: "#settings" },
   ];
 
@@ -98,8 +99,8 @@ const HomePage = () => {
           ))}
       </Map>
 
-      <EventForm />
-      <EditEvent />
+      <AddEventForm />
+      <EditEventForm />
     </div>
   );
 };

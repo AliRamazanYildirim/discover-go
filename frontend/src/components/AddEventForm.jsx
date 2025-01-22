@@ -2,7 +2,7 @@ import { Modal, Box, TextField, Button, IconButton, Input, InputLabel, FormContr
 import CloseIcon from '@mui/icons-material/Close';
 import { useEventStore } from '../store/useEventStore';
 
-const EventForm = () => {
+const AddEventForm = () => {
     const { modalOpen, currentEvent, mapClickLocation, addEvent, closeModal } = useEventStore();
 
     const handleInputChange = (e) => {
@@ -89,4 +89,4 @@ const EventForm = () => {
     );
 };
 
-export default EventForm;
+export default AddEventForm;
