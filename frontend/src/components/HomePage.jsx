@@ -56,15 +56,6 @@ const HomePage = () => {
     { text: "Settings", icon: <Settings />, link: "#settings" },
   ];
 
-  /* const handleMapClick = ({ latLng }) => {
-    setMapClickLocation({ lat: latLng[0], lng: latLng[1] });
-    openModal({
-      title: "",
-      description: "",
-      date: "",
-    });
-  }; */
-
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       <IconButton

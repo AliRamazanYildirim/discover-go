@@ -5,19 +5,25 @@ export const useEventStore = create((set) => ({
     events: [],
     modalOpen: false,
     editModalOpen: false,
+    deleteModalOpen: false,
     currentEvent: null,
     mapClickLocation: null,
     setMapClickLocation: (location) => set({ mapClickLocation: location }),
-    openEditModal: (event) => set({ editModalOpen: true, currentEvent: event }),
+    openEditModal: (event) => set({ editModalOpen: true, currentEvent: { ...event } }),
     closeEditModal: () => set({ editModalOpen: false, currentEvent: null }),
+    openDeleteModal: (event) => set({ deleteModalOpen: true, currentEvent: event }),
+    closeDeleteModal: () => set({ deleteModalOpen: false, currentEvent: null }),
+
     addEvent: async (event) => {
-        try {
-            const newEvent = await createEvent(event);
-            set((state) => ({ events: [...state.events, newEvent] }));
-        } catch (error) {
-            console.error('Error adding event:', error.message || error);
-        }
-    },
+    try {
+        const response = await createEvent(event);
+        const newEvent = response.data; // New event data returned from the backend
+        set((state) => ({ events: [...state.events, newEvent] }));
+        console.log('Event added to store:', newEvent);
+    } catch (error) {
+        console.error('Error adding event:', error.message || error);
+    }
+},
     getAllEvents: async () => {
         try {
             const response = await getAllEvents();
@@ -29,14 +35,18 @@ export const useEventStore = create((set) => ({
     },
     updateEvent: async (id, updatedEvent) => {
         try {
-            const updated = await updateEvent(id, updatedEvent);
+            const response = await updateEvent(id, updatedEvent); 
+            const updated = response.data; // Updated event data returned from the backend
             set((state) => ({
-                events: state.events.map((event) => event._id === id ? updated : event),
+                events: state.events.map((event) =>
+                    event._id === id ? updated : event
+                ),
             }));
+            console.log('Event updated in store:', updated);
         } catch (error) {
             console.error('Error updating event:', error.message || error);
         }
-    },
+    },       
     deleteEvent: async (id) => {
         try {
             await deleteEvent(id);
