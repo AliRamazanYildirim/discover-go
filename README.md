@@ -23,6 +23,30 @@
 
 Dieses Event Management System ist eine umfassende Webanwendung, die entwickelt wurde, um Events und Benutzer effizient zu verwalten. Das System basiert auf einer modernen Microservices-Architektur und verwendet die neuesten Technologien für optimale Leistung und Skalierbarkeit.
 
+## Projektbilder
+
+Hier sind einige Bilder, die verschiedene Aspekte des Event Management Systems zeigen:
+
+### Benutzer-Login
+
+![API-Dokumentation](frontend/public/login.jpeg)
+
+### Benutzeroberfläche
+
+![Benutzeroberfläche](frontend/public/homepage.jpeg)
+
+### Event-Erstellung
+
+![Event-Erstellung](frontend/public/add-event.jpeg)
+
+### Event-Bearbeitung
+
+![Event-Erstellung](frontend/public/edit-event.jpeg)
+
+### Event-Löschung
+
+![Dashboard](frontend/public/remove-event.jpeg)
+
 ### Hauptfunktionalitäten
 
 - Benutzer- und Rechteverwaltung
