@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import eventRoutes from './routes/event.route.js';
-import userRoutes from "./routes/user.route.js";
+import userRoutes from "./routes/auth.route.js";
 
 // Load environment variables from .env file
 dotenv.config();

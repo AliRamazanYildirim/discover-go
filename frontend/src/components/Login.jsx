@@ -1,4 +1,4 @@
-import { loginUser } from '../../../backend/services/user.service';
+import { loginUser } from '../../../backend/services/auth.service';
 import useLoginStore from '../store/useLoginStore';
 
 const Login = () => {
