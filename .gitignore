@@ -28,3 +28,8 @@ dist-ssr
 
 # Bun
 .bun.lockb
+
+# MongoDB dumps
+mongodump/
+*.dump
+dump/
